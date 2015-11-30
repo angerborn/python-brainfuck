@@ -2,6 +2,16 @@
 
 import sys
 
+class Instruction:
+    increment = "+"
+    decrement = "-"
+    increment_pointer = ">"
+    decrement_pointer = "<"
+    put = "."
+    read = ","
+    loop = "["
+    end_loop = "]"
+
 class Interpreter():
     MAX_DATA_SIZE = 50000
 
@@ -24,22 +34,22 @@ class Interpreter():
 
     def __execute_instruction_at_pointer(self):
         instruction = self.program[self.instruction_pointer]
-        if instruction == ">":
+        if instruction == Instruction.increment_pointer:
             self.__increment_pointer()
-        elif instruction == "<":
+        elif instruction == Instruction.decrement_pointer:
             self.__decrement_pointer()
-        elif instruction == "+":
+        elif instruction == Instruction.increment:
             self.__increment()
-        elif instruction == "-":
+        elif instruction == Instruction.decrement:
             self.__decrement()
-        elif instruction == ".":
+        elif instruction == Instruction.put:
             self.__putchar()
-        elif instruction == ",":
+        elif instruction == Instruction.read:
             self.__readchar()
-        elif instruction == "[":
-            self.__bracket()
-        elif instruction == "]":
-            self.__end_bracket()
+        elif instruction == Instruction.loop:
+            self.__loop()
+        elif instruction == Instruction.end_loop:
+            self.__end_loop()
 
     def __increment_pointer(self):
         self.ptr += 1
@@ -64,11 +74,11 @@ class Interpreter():
     def __readchar(self):
         self.data[self.ptr] = ord(sys.stdin.read(1))
 
-    def __bracket(self):
+    def __loop(self):
         if self.data[self.ptr] == 0:
             self.__go_to_matching_bracket()
 
-    def __end_bracket(self):
+    def __end_loop(self):
         if self.data[self.ptr] != 0:
             self.__go_to_matching_bracket()
 
